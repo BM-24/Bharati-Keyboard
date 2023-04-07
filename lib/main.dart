@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import 'LocaleString.dart';
+//import 'LocaleString.dart';
 import 'home_page.dart';
 import 'providers/languages.dart';
 import 'providers/text_provider.dart';
@@ -11,7 +11,7 @@ import 'providers/text_provider.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => TextProvider()),
-  ChangeNotifierProvider(create: (_) => Languages()),
+    ChangeNotifierProvider(create: (_) => Languages()),
   ], child: const MyApp()));
 }
 
@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Bhararti Keyboard',
       debugShowCheckedModeBanner: false,
-      translations: LocaleString(),
-      locale: const Locale('hi', 'IN'),
+      //translations: LocaleString(),
+      //locale: const Locale('hi', 'IN'),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
