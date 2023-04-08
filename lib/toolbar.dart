@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ToolBar extends StatefulWidget {
-  ToolBar({super.key});
+  ToolBar({super.key, required this.language});
 
+  int language;
   String language1 = 'भारति';
-  String language2 = Languages.devaNagari;
   List<String> languageList = Languages.languageList;
-  String choosenLanguage = Languages.languageList[0];
+  List<String> languageNames = Languages.languageNames;
 
   @override
   State<ToolBar> createState() => _ToolBarState();
@@ -53,14 +53,14 @@ class _ToolBarState extends State<ToolBar> {
             icon: const Icon(Icons.compare_arrows_rounded),
           ),
           Text(
-            widget.language2,
+            widget.languageNames[widget.language],
             style: const TextStyle(
               fontSize: 20,
             ),
           ),
           // Drop down menu
           DropdownButton<String>(
-            value: widget.choosenLanguage,
+            value: widget.languageList[widget.language],
             iconSize: 24,
             elevation: 16,
             style: const TextStyle(color: Colors.black),
@@ -71,7 +71,7 @@ class _ToolBarState extends State<ToolBar> {
             ),
             onChanged: (String? newValue) {
               setState(() {
-                widget.choosenLanguage = newValue!;
+                widget.language = widget.languageList.indexOf(newValue!);
               });
             },
             items: widget.languageList

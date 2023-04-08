@@ -11,24 +11,26 @@ class TextProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addText(String text, String lang, int row, int col) {
+  void addText(String text, int row, int col) {
     _text += text;
     _keyPoints.add({'row': row, 'col': col});
     debugPrint('addText() called for $_text');
     notifyListeners();
   }
 
+  void updateText(String char) {
+    _text = _text.substring(0, _text.length - 1);
+    _text += char;
+    notifyListeners();
+  }
+
   void removeText() {
+    debugPrint('removeText() called for $_text');
     if (_text.isNotEmpty) {
       _text = _text.substring(0, _text.length - 1);
       _keyPoints.removeLast();
     }
-    debugPrint('removeText() called for $_text');
     notifyListeners();
-  }
-
-  void function(String char) {
-    debugPrint('function() called for $char');
   }
 
   Map<String, int> getLatestKeyPoint() {

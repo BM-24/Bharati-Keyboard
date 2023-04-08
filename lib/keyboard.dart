@@ -1,17 +1,24 @@
-import 'package:bharati_keyboard/text_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/text_provider.dart';
 import 'providers/languages.dart';
 
 class Keyboard extends StatelessWidget {
-  const Keyboard({super.key, required this.lang});
+  Keyboard({super.key, required this.lang});
 
-  final String lang;
+  final int lang;
 
   // 2d Grid of keyboard characters
   //static List<List<String>> charArray = Languages.devaNagariChars;
-  static TextWindow tw = const TextWindow();
+
+  bool firstInit = true;
+
+  void setUp(BuildContext context) {
+    if (firstInit) {
+      firstInit = false;
+      context.read<Languages>().setChoosenLanguageIndex(lang);
+    }
+  }
 
   Widget getButton(String text, int row, int col, BuildContext context) {
     if (text == 'space') {
@@ -21,10 +28,12 @@ class Keyboard extends StatelessWidget {
         height: 60.0,
         child: TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Colors.grey[300],
+            disabledBackgroundColor: Colors.grey[200],
           ),
           onPressed: () {
-            context.read<TextProvider>().addText(' ', lang, row, col);
+            context.read<Languages>().removeTopChars();
+            context.read<TextProvider>().addText(' ', row, col);
           },
           child: const Text(" "),
         ),
@@ -38,21 +47,25 @@ class Keyboard extends StatelessWidget {
           height: 60.0,
           child: TextButton(
             style: TextButton.styleFrom(
-              backgroundColor: Colors.grey[200],
+              backgroundColor: Colors.grey[300],
             ),
             onPressed: () {
+              context.read<Languages>().removeTopChars();
               context.read<TextProvider>().removeText();
               Map<String, int> prevKey =
                   context.read<TextProvider>().getLatestKeyPoint();
               int prow = prevKey['row']!;
               int pcol = prevKey['col']!;
+              String prevText = context.read<TextProvider>().getLatestChar();
+
               if (context.read<Languages>().getCharacterType(prow, pcol) == 2) {
                 context
                     .read<Languages>()
                     .addTopChars(context.read<TextProvider>().getLatestChar());
-              } else {
-                context.read<Languages>().removeTopChars();
               }
+
+              context.read<Languages>().updateEnabled(prow, pcol);
+              context.read<Languages>().updateType3(prow, pcol, prevText);
             },
             child: const Icon(
               Icons.backspace_outlined,
@@ -69,12 +82,17 @@ class Keyboard extends StatelessWidget {
           height: 60.0,
           child: TextButton(
             style: TextButton.styleFrom(
-              backgroundColor: Colors.grey[200],
+              backgroundColor: Colors.grey[300],
             ),
             onPressed: () {
-              context.read<TextProvider>().addText('\n', lang, row, col);
+              context.read<Languages>().removeTopChars();
+              context.read<TextProvider>().addText('\n', row, col);
+              context.read<Languages>().updateEnabled(row, col);
             },
-            child: const Text(""),
+            child: const Icon(
+              Icons.keyboard_return_outlined,
+              color: Colors.deepPurpleAccent,
+            ),
           ),
         ),
       );
@@ -85,44 +103,87 @@ class Keyboard extends StatelessWidget {
         height: 60.0,
         child: TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Colors.grey[300],
+            disabledBackgroundColor: Colors.grey[200],
           ),
-          onPressed: () {
-            if (text.length > 1) text = text[1];
-            context.read<Languages>().removeTopChars();
-            context.read<TextProvider>().addText(text, lang, row, col);
+          onPressed: !context.watch<Languages>().isEnabled[row][col]
+              ? null
+              : () {
+                  int type =
+                      context.read<Languages>().getCharacterType(row, col);
+                  if (type == 3) {
+                    context.read<Languages>().removeTopChars();
+                    String prevChar =
+                        context.read<TextProvider>().getLatestChar();
+                    Map<String, int> prevKey =
+                        context.read<TextProvider>().getLatestKeyPoint();
+                    context.read<TextProvider>().removeText();
+                    context
+                        .read<TextProvider>()
+                        .addText(text, prevKey['row']!, prevKey['col']!);
+                    context.read<Languages>().addTopChars(text);
+                  }
 
-            if (context.read<Languages>().getCharacterType(row, col) == 2) {
-              context.read<Languages>().addTopChars(text);
-            }
+                  if (type == 4) {
+                    context.read<Languages>().removeTopChars();
+                    String prevChar =
+                        context.read<TextProvider>().getLatestChar();
+                    Map<String, int> prevKey =
+                        context.read<TextProvider>().getLatestKeyPoint();
+                    context.read<TextProvider>().removeText();
+                    text = context.read<Languages>().getType4Char(
+                        row, col, prevChar, prevKey['row']!, prevKey['col']!);
+                    context
+                        .read<TextProvider>()
+                        .addText(text, prevKey['row']!, prevKey['col']!);
+                    context.read<Languages>().addTopChars(text);
+                  }
 
-            /*if (row == 2 || row == 3){
-              if (col > 0){
-                if(!(row == 3 && col == 8)){
-                  context.read<Languages>().addTopChars(text);
-                }
-              }
-            }*/
-            //context.read<Languages>().addTopChars(text);
-            //tw.function(text);
-          },
+                  if (type == 2) {
+                    context.read<Languages>().removeTopChars();
+                    context.read<TextProvider>().addText(text, row, col);
+                    context.read<Languages>().addTopChars(text);
+                  }
+
+                  if (type == 1) {
+                    if (row == 0 && col == 0) {
+                      context.read<Languages>().removeTopChars();
+                      if (text.length == 1) {
+                        context.read<TextProvider>().addText(text, row, col);
+                      }
+                    } else {
+                      context.read<Languages>().removeTopChars();
+                      if (text.length > 1) text = text[1];
+                      context.read<TextProvider>().addText(text, row, col);
+                    }
+                  }
+
+                  context.read<Languages>().updateEnabled(row, col);
+                  context.read<Languages>().updateType3(row, col, text);
+                },
           child: Text(
             text,
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 24,
               fontFamily: 'Bharati',
-              /* color: context.read()<Languages>().getCharacterType(row, col) == 2
-                  ? Colors.deepPurpleAccent
-                  : context.read()<Languages>().getCharacterType(row, col) == 1
-                      ? Colors.red
-                      : Colors.green,*/
+              fontWeight: FontWeight.bold,
               color: (row == 0 || row == 1)
-                  ? Colors.red
+                  ? Colors.red.withOpacity(
+                      context.watch<Languages>().isEnabled[row][col] ? 1 : 0.5)
                   : (col == 0)
-                      ? Colors.green
+                      ? Colors.green.withOpacity(
+                          context.watch<Languages>().isEnabled[row][col]
+                              ? 1
+                              : 0.5)
                       : (row == 4 && (col == 2 || col == 4))
-                          ? Colors.green
-                          : Colors.deepPurpleAccent,
+                          ? Colors.green.withOpacity(
+                              context.watch<Languages>().isEnabled[row][col]
+                                  ? 1
+                                  : 0.5)
+                          : Colors.deepPurpleAccent.withOpacity(
+                              context.watch<Languages>().isEnabled[row][col]
+                                  ? 1
+                                  : 0.5),
             ),
           ),
         ),
@@ -132,28 +193,22 @@ class Keyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setUp(context);
     return Container(
       margin:
           const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
       child: Column(
         children: [
           for (int i = 0;
-              i < context.watch<Languages>().getDevaNagariChars().length;
+              i < context.watch<Languages>().getCharacterSet().length;
               i++)
             Row(
               children: [
                 for (int j = 0;
-                    j <
-                        context
-                            .watch<Languages>()
-                            .getDevaNagariChars()[i]
-                            .length;
+                    j < context.watch<Languages>().getCharacterSet()[i].length;
                     j++)
-                  getButton(
-                      context.watch<Languages>().getDevaNagariChars()[i][j],
-                      i,
-                      j,
-                      context),
+                  getButton(context.watch<Languages>().getCharacterSet()[i][j],
+                      i, j, context),
               ],
             ),
 
