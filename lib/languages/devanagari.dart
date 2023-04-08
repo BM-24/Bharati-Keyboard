@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Devanagari {
+class Devanagari 
+{
+  Devanagari(){
+    setDefaultEnabled();
+  }
   static const String languageName = 'देवनागरी';
 
-  List<List<String>> devaNagariChars = [
+  List<List<String>> characterSet = [
     [
       '\u0905',
       '\u0906',
@@ -56,7 +60,7 @@ class Devanagari {
     ]
   ];
 
-  List<List<String>> extraDevaNagariChars = [
+  List<List<String>> extraCharacterSet = [
     [
       ' ',
       '\u093E',
@@ -81,11 +85,11 @@ class Devanagari {
   List<List<bool>> enabled = [];
 
   List<List<String>> getCharacterSet() {
-    return devaNagariChars;
+    return characterSet;
   }
 
   List<List<String>> getExtraCharacterSet() {
-    return extraDevaNagariChars;
+    return extraCharacterSet;
   }
 
   List<List<bool>> getEnabled() {
@@ -94,11 +98,11 @@ class Devanagari {
 
   void addTopChars(String char) {
     for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < devaNagariChars[i].length; j++) {
+      for (int j = 0; j < characterSet[i].length; j++) {
         if (enabled[i][j] == false) continue;
-        String temp = devaNagariChars[i][j];
-        devaNagariChars[i][j] = char + extraDevaNagariChars[i][j];
-        extraDevaNagariChars[i][j] = temp;
+        String temp = characterSet[i][j];
+        characterSet[i][j] = char + extraCharacterSet[i][j];
+        extraCharacterSet[i][j] = temp;
       }
     }
     debugPrint('addTopChars() called for devanagari $char');
@@ -106,12 +110,12 @@ class Devanagari {
 
   void removeTopChars() {
     for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < devaNagariChars[i].length; j++) {
-        if (devaNagariChars[i][j].length > 1) {
+      for (int j = 0; j < characterSet[i].length; j++) {
+        if (characterSet[i][j].length > 1) {
           if (enabled[i][j] == false) continue;
-          String temp = devaNagariChars[i][j];
-          devaNagariChars[i][j] = extraDevaNagariChars[i][j];
-          extraDevaNagariChars[i][j] = temp[1];
+          String temp = characterSet[i][j];
+          characterSet[i][j] = extraCharacterSet[i][j];
+          extraCharacterSet[i][j] = temp[1];
         }
       }
     }
@@ -120,9 +124,9 @@ class Devanagari {
 
   void setDefaultEnabled() {
     enabled.clear();
-    for (int i = 0; i < devaNagariChars.length; i++) {
+    for (int i = 0; i < characterSet.length; i++) {
       List<bool> temp = [];
-      for (int j = 0; j < devaNagariChars[i].length; j++) {
+      for (int j = 0; j < characterSet[i].length; j++) {
         if (j == 0 && i != 0) {
           temp.add(false);
         } else if (i == 1 && j == 3) {
@@ -160,18 +164,18 @@ class Devanagari {
       String newChar2 = String.fromCharCode(char.codeUnitAt(0) + 2);
       String newChar3 = String.fromCharCode(char.codeUnitAt(0) + 3);
 
-      devaNagariChars[2][0] = newChar1;
-      devaNagariChars[3][0] = newChar2;
-      devaNagariChars[4][0] = newChar3;
+      characterSet[2][0] = newChar1;
+      characterSet[3][0] = newChar2;
+      characterSet[4][0] = newChar3;
     } else {
       setDefaultType3();
     }
   }
 
   void setDefaultType3() {
-    devaNagariChars[2][0] = '·';
-    devaNagariChars[3][0] = '|';
-    devaNagariChars[4][0] = '| ·';
+    characterSet[2][0] = '·';
+    characterSet[3][0] = '|';
+    characterSet[4][0] = '| ·';
   }
 
   String getType4(String char, int row, int col, int prevRow, int prevCol) {

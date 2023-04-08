@@ -45,8 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
               language: 0,
             ),
             Keyboard(
-              lang: 0,
-            ),
+                //lang: context.watch<Languages>().choosenLanguageIndex,
+                ),
           ],
         ),
       ),

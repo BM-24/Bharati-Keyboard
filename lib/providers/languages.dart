@@ -30,21 +30,28 @@ class Languages with ChangeNotifier {
     'ଓଡ଼ିଆ'
   ];
 
-  int _choosenLanguageIndex = 0;
-
-  List<List<String>> characterSet = [];
-  List<List<String>> extraCharacterSet = [];
-  List<List<bool>> isEnabled = [];
-
   Devanagari devanagari = Devanagari();
   Bengali bengali = Bengali();
 
+  int _choosenLanguageIndex = 0;
+  List<List<String>> characterSet = Devanagari().getCharacterSet();
+  List<List<String>> extraCharacterSet = Devanagari().getExtraCharacterSet();
+  List<List<bool>> isEnabled = Devanagari().getEnabled();
+
   List<List<String>> getCharacterSet() {
-    return devanagari.getCharacterSet();
+    if (_choosenLanguageIndex == 0) {
+      return devanagari.getCharacterSet();
+    } else {
+      return bengali.getCharacterSet();
+    }
   }
 
   List<List<String>> getExtraCharacterSet() {
-    return devanagari.getExtraCharacterSet();
+    if (_choosenLanguageIndex == 0) {
+      return devanagari.getExtraCharacterSet();
+    } else {
+      return bengali.getExtraCharacterSet();
+    }
   }
 
   int get choosenLanguageIndex => _choosenLanguageIndex;
@@ -56,8 +63,13 @@ class Languages with ChangeNotifier {
       extraCharacterSet = devanagari.getExtraCharacterSet();
       devanagari.setDefaultEnabled();
       isEnabled = devanagari.getEnabled();
+    } else if (_choosenLanguageIndex == 5) {
+      characterSet = bengali.getCharacterSet();
+      extraCharacterSet = bengali.getExtraCharacterSet();
+      bengali.setDefaultEnabled();
+      isEnabled = bengali.getEnabled();
     }
-    //notifyListeners();
+    notifyListeners();
   }
 
   void addTopChars(String char) {
@@ -65,6 +77,10 @@ class Languages with ChangeNotifier {
       devanagari.addTopChars(char);
       characterSet = devanagari.getCharacterSet();
       extraCharacterSet = devanagari.getExtraCharacterSet();
+    } else if (_choosenLanguageIndex == 5) {
+      bengali.addTopChars(char);
+      characterSet = bengali.getCharacterSet();
+      extraCharacterSet = bengali.getExtraCharacterSet();
     }
     notifyListeners();
   }
@@ -74,6 +90,10 @@ class Languages with ChangeNotifier {
       devanagari.removeTopChars();
       characterSet = devanagari.getCharacterSet();
       extraCharacterSet = devanagari.getExtraCharacterSet();
+    } else if (_choosenLanguageIndex == 5) {
+      bengali.removeTopChars();
+      characterSet = bengali.getCharacterSet();
+      extraCharacterSet = bengali.getExtraCharacterSet();
     }
     notifyListeners();
   }
@@ -81,6 +101,8 @@ class Languages with ChangeNotifier {
   String getType4Char(int row, int col, String char, int prevRow, int prevCol) {
     if (_choosenLanguageIndex == 0) {
       return devanagari.getType4(char, row, col, prevRow, prevCol);
+    } else if (_choosenLanguageIndex == 5) {
+      return bengali.getType4(char, row, col, prevRow, prevCol);
     }
     return char;
   }
@@ -90,6 +112,10 @@ class Languages with ChangeNotifier {
       devanagari.setNewType3(row, col, char);
       characterSet = devanagari.getCharacterSet();
       extraCharacterSet = devanagari.getExtraCharacterSet();
+    } else if (_choosenLanguageIndex == 5) {
+      bengali.setNewType3(row, col, char);
+      characterSet = bengali.getCharacterSet();
+      extraCharacterSet = bengali.getExtraCharacterSet();
     }
     notifyListeners();
   }
@@ -136,6 +162,10 @@ class Languages with ChangeNotifier {
     if (_choosenLanguageIndex == 0) {
       devanagari.updateEnabled(row, col);
       isEnabled = devanagari.getEnabled();
+      debugPrint(isEnabled[2][0].toString());
+    } else if (_choosenLanguageIndex == 5) {
+      bengali.updateEnabled(row, col);
+      isEnabled = bengali.getEnabled();
       debugPrint(isEnabled[2][0].toString());
     }
     notifyListeners();

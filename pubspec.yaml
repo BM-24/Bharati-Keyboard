@@ -81,9 +81,13 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Bharati
+    - family: NavBharati
       fonts:
         - asset: fonts/NavBharati.ttf
+        
+    - family: SundarBharati
+      fonts:
+        - asset: fonts/SundarBharati-Regular.otf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

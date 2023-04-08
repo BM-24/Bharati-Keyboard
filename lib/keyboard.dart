@@ -1,24 +1,26 @@
+import 'package:bharati_keyboard/languages/bengali.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/text_provider.dart';
 import 'providers/languages.dart';
 
 class Keyboard extends StatelessWidget {
-  Keyboard({super.key, required this.lang});
+  Keyboard({super.key});
 
-  final int lang;
+  //final int lang;
 
   // 2d Grid of keyboard characters
   //static List<List<String>> charArray = Languages.devaNagariChars;
 
-  bool firstInit = true;
+  /*bool firstInit = true;
 
   void setUp(BuildContext context) {
     if (firstInit) {
       firstInit = false;
       context.read<Languages>().setChoosenLanguageIndex(lang);
+      debugPrint('Keyboard: setUp: lang: $lang');
     }
-  }
+  }*/
 
   Widget getButton(String text, int row, int col, BuildContext context) {
     if (text == 'space') {
@@ -165,7 +167,7 @@ class Keyboard extends StatelessWidget {
             text,
             style: TextStyle(
               fontSize: 24,
-              fontFamily: 'Bharati',
+              fontFamily: 'NavBharati',
               fontWeight: FontWeight.bold,
               color: (row == 0 || row == 1)
                   ? Colors.red.withOpacity(
@@ -193,7 +195,7 @@ class Keyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    setUp(context);
+    //setUp(context);
     return Container(
       margin:
           const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
@@ -201,14 +203,21 @@ class Keyboard extends StatelessWidget {
         children: [
           for (int i = 0;
               i < context.watch<Languages>().getCharacterSet().length;
+              //i < Bengali().bengaliChars.length;
               i++)
             Row(
               children: [
                 for (int j = 0;
                     j < context.watch<Languages>().getCharacterSet()[i].length;
+                    //j < Bengali().bengaliChars[i].length;
                     j++)
-                  getButton(context.watch<Languages>().getCharacterSet()[i][j],
-                      i, j, context),
+                  getButton(
+                    context.watch<Languages>().getCharacterSet()[i][j],
+                    i,
+                    j,
+                    context,
+                  ),
+                //getButton(Bengali().bengaliChars[i][j], i, j, context),
               ],
             ),
 

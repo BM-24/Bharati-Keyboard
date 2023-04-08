@@ -17,12 +17,9 @@ class TextWindow extends StatefulWidget {
   }
 }
 
-class _TextWindowState extends State<TextWindow> 
-{
-
+class _TextWindowState extends State<TextWindow> {
   // Text Controller
   final TextEditingController _controller = TextEditingController();
-  
 
   @override
   void initState() {
@@ -82,7 +79,7 @@ class _TextWindowState extends State<TextWindow>
                   style: const TextStyle(
                     fontFeatures: [FontFeature.enable('smcp')],
                     fontSize: 28.0,
-                    fontFamily: 'Bharati',
+                    fontFamily: 'SundarBharati',
                     color: Colors.white,
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:bharati_keyboard/providers/languages.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ToolBar extends StatefulWidget {
@@ -72,6 +73,9 @@ class _ToolBarState extends State<ToolBar> {
             onChanged: (String? newValue) {
               setState(() {
                 widget.language = widget.languageList.indexOf(newValue!);
+                context
+                    .read<Languages>()
+                    .setChoosenLanguageIndex(widget.language);
               });
             },
             items: widget.languageList
