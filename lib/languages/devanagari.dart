@@ -1,87 +1,16 @@
-import 'package:flutter/material.dart';
+  import 'package:bharati_keyboard/languages/keyboard_chars.dart';
+  import 'package:flutter/material.dart';
 
-class Devanagari 
-{
-  Devanagari(){
+class Devanagari {
+  Devanagari() {
     setDefaultEnabled();
   }
   static const String languageName = 'देवनागरी';
+  List<List<String>> characterSet = KeyBoardChars().characterSet;
+  List<List<String>> extraCharacterSet = KeyBoardChars().extraCharacterSet;
 
-  List<List<String>> characterSet = [
-    [
-      '\u0905',
-      '\u0906',
-      '\u0907',
-      '\u0908',
-      '\u0909',
-      '\u090A',
-      '\u090B',
-      '\u094D',
-    ],
-    [
-      'a',
-      '\u090F',
-      '\u0910',
-      'b',
-      '\u0913',
-      '\u0914',
-      '\u0902',
-      '\u0903',
-    ],
-    [
-      '·',
-      '\u0915',
-      '\u091A',
-      '\u091F',
-      '\u0924',
-      '\u092A',
-      '\u0928',
-      '\u0923',
-    ],
-    [
-      '|',
-      '\u092E',
-      '\u092F',
-      '\u0930',
-      '\u0932',
-      '\u0935',
-      '\u0938',
-      '\u0939',
-      '-1',
-    ],
-    [
-      '| ·',
-      '\u091E',
-      '_',
-      'space',
-      '=',
-      '\u0919',
-      'nl',
-    ]
-  ];
+  List<String> Hintel = KeyBoardChars().Hintel, hin = KeyBoardChars().hin;
 
-  List<List<String>> extraCharacterSet = [
-    [
-      ' ',
-      '\u093E',
-      '\u093F',
-      '\u0940',
-      '\u0941',
-      '\u0942',
-      '\u0943',
-      '\u094D',
-    ],
-    [
-      ' ',
-      '\u0947',
-      '\u0948',
-      '',
-      '\u094B',
-      '\u094C',
-      '\u0902',
-      '\u0903',
-    ],
-  ];
   List<List<bool>> enabled = [];
 
   List<List<String>> getCharacterSet() {
@@ -99,7 +28,7 @@ class Devanagari
   void addTopChars(String char) {
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < characterSet[i].length; j++) {
-        if (enabled[i][j] == false) continue;
+        // if (enabled[i][j] == false) continue;
         String temp = characterSet[i][j];
         characterSet[i][j] = char + extraCharacterSet[i][j];
         extraCharacterSet[i][j] = temp;
@@ -112,7 +41,7 @@ class Devanagari
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < characterSet[i].length; j++) {
         if (characterSet[i][j].length > 1) {
-          if (enabled[i][j] == false) continue;
+          // if (enabled[i][j] == false) continue;
           String temp = characterSet[i][j];
           characterSet[i][j] = extraCharacterSet[i][j];
           extraCharacterSet[i][j] = temp[1];
@@ -191,5 +120,18 @@ class Devanagari
       }
     }
     return char;
+  }
+
+  String getMappedText(String text) {
+    String ans = '';
+    for (int i = 0; i < text.length; i++) {
+      int index = Hintel.indexOf(text[i]);
+      if (index != -1) {
+        ans += hin[index];
+      } else {
+        ans += text[i];
+      }
+    }
+    return ans;
   }
 }

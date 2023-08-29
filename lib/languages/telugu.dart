@@ -1,17 +1,19 @@
-import 'package:bharati_keyboard/languages/keyboard_chars.dart';
 import 'package:flutter/material.dart';
 
-class Bengali {
-  static const String languageName = 'বাংলা';
-  Bengali() {
+import 'keyboard_chars.dart';
+
+class Telugu {
+  static const String languageName = 'తెలుగు';
+  Telugu() {
     setDefaultEnabled();
   }
 
   List<List<String>> characterSet = KeyBoardChars().characterSet;
   List<List<String>> extraCharacterSet = KeyBoardChars().extraCharacterSet;
 
-  List<String> ben_tel = KeyBoardChars().ben_tel;
-  List<String> ben = KeyBoardChars().ben;
+  String getMappedText(String text) {
+    return text;
+  }
 
   List<List<bool>> enabled = [];
 
@@ -36,7 +38,7 @@ class Bengali {
         extraCharacterSet[i][j] = temp;
       }
     }
-    debugPrint('addTopChars() called for bengali $char');
+    debugPrint('addTopChars() called for telugu $char');
   }
 
   void removeTopChars() {
@@ -50,7 +52,7 @@ class Bengali {
         }
       }
     }
-    debugPrint('removeTopChars() called for bengali');
+    debugPrint('removeTopChars() called for telugu');
   }
 
   void setDefaultEnabled() {
@@ -58,13 +60,9 @@ class Bengali {
     for (int i = 0; i < characterSet.length; i++) {
       List<bool> temp = [];
       for (int j = 0; j < characterSet[i].length; j++) {
-        if (j == 0 && i != 0) {
-          temp.add(false);
-        } else if (i == 1 && j == 3) {
+        if (j == 0 && i > 1) {
           temp.add(false);
         } else if (i == 4 && (j == 2 || j == 4)) {
-          temp.add(false);
-        } else if (i == 3 && j == 5) {
           temp.add(false);
         } else {
           temp.add(true);
@@ -80,6 +78,8 @@ class Bengali {
       enabled[2][0] = true;
       enabled[3][0] = true;
       enabled[4][0] = true;
+    } else if (row == 3 && (col == 3 || col == 4)) {
+      enabled[4][2] = true;
     } else if (row == 3 && col == 6) {
       enabled[4][2] = true;
       enabled[4][4] = true;
@@ -122,19 +122,5 @@ class Bengali {
       }
     }
     return char;
-  }
-
-  String getMappedText(String text) {
-    String ans = "";
-    for (int i = 0; i < text.length; i++) {
-      int index = ben_tel.indexOf(text[i]);
-      if (index != -1) {
-        ans += ben[index];
-      } else {
-        ans += text[i];
-      }
-    }
-
-    return ans;
   }
 }

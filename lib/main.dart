@@ -1,9 +1,9 @@
+import 'package:bharati_keyboard/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-//import 'LocaleString.dart';
 import 'home_page.dart';
 import 'providers/languages.dart';
 import 'providers/text_provider.dart';
@@ -31,12 +31,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Bhararti Keyboard',
       debugShowCheckedModeBanner: false,
-      //translations: LocaleString(),
-      //locale: const Locale('hi', 'IN'),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Bhararti Keyboard'),
+      // home: const MyHomePage(title: 'Bhararti Keyboard'),
+      home: const SplashScreen(),
     );
   }
 }

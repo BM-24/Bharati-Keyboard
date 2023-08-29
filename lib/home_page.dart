@@ -1,5 +1,6 @@
 import 'package:bharati_keyboard/keyboard.dart';
 import 'package:bharati_keyboard/providers/languages.dart';
+import 'package:bharati_keyboard/splash_screen.dart';
 import 'package:bharati_keyboard/text_window.dart';
 import 'package:bharati_keyboard/toolbar.dart';
 import 'package:flutter/material.dart';
@@ -22,31 +23,42 @@ class _MyHomePageState extends State<MyHomePage> {
       //   backgroundColor: Colors.blue,
       // ),
       body: Center(
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.15,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                color: Colors.pink,
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      color: Colors.pink,
+                    ),
+                    child: const Image(
+                      alignment: Alignment.topCenter,
+                      image: AssetImage(
+                        'images/Banner.png',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Expanded(
+                    child: TextWindow(
+                      chosenLanguage:
+                          context.watch<Languages>().choosenLanguageIndex,
+                    ),
+                  ),
+                  ToolBar(
+                    language: context.watch<Languages>().choosenLanguageIndex,
+                    // currentLang: Languages.languageNames[0],
+                    currentLang: Languages.languageNames[
+                        context.watch<Languages>().choosenLanguageIndex],
+                  ),
+                  Keyboard(),
+                ],
               ),
-              child: const Image(
-                alignment: Alignment.topCenter,
-                image: AssetImage(
-                  'images/Banner.png',
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            const Expanded(
-              child: TextWindow(),
-            ),
-            ToolBar(
-              language: 0,
-            ),
-            Keyboard(
-                //lang: context.watch<Languages>().choosenLanguageIndex,
-                ),
+            )
           ],
         ),
       ),

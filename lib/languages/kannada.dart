@@ -1,17 +1,17 @@
-import 'package:bharati_keyboard/languages/keyboard_chars.dart';
+import 'keyboard_chars.dart';
 import 'package:flutter/material.dart';
 
-class Bengali {
-  static const String languageName = 'বাংলা';
-  Bengali() {
+class Kannada {
+  Kannada() {
     setDefaultEnabled();
   }
 
+  static const String languageName = 'ಕನ್ನಡ';
   List<List<String>> characterSet = KeyBoardChars().characterSet;
   List<List<String>> extraCharacterSet = KeyBoardChars().extraCharacterSet;
 
-  List<String> ben_tel = KeyBoardChars().ben_tel;
-  List<String> ben = KeyBoardChars().ben;
+  List<String> kannada = KeyBoardChars().kan;
+  List<String> kannada_tel = KeyBoardChars().kantel;
 
   List<List<bool>> enabled = [];
 
@@ -27,6 +27,38 @@ class Bengali {
     return enabled;
   }
 
+  void setDefaultEnabled() {
+    enabled.clear();
+    for (int i = 0; i < characterSet.length; i++) {
+      List<bool> temp = [];
+      for (int j = 0; j < characterSet[i].length; j++) {
+        if (j == 0 && i > 1) {
+          temp.add(false);
+        } else if (i == 4 && (j == 2 || j == 4)) {
+          temp.add(false);
+        } else {
+          temp.add(true);
+        }
+      }
+      enabled.add(temp);
+    }
+  }
+
+  String getMappedText(String text) {
+    String ans = '';
+    for (int i = 0; i < text.length; i++) {
+      int index = kannada_tel.indexOf(text[i]);
+      if (index == -1) {
+        debugPrint("ERROR : Character not mapped $text[i]");
+        ans += text[i];
+      } else {
+        ans += kannada[index];
+      }
+    }
+    debugPrint('getMappedText() called for kannada $ans');
+    return ans;
+  }
+
   void addTopChars(String char) {
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < characterSet[i].length; j++) {
@@ -36,7 +68,7 @@ class Bengali {
         extraCharacterSet[i][j] = temp;
       }
     }
-    debugPrint('addTopChars() called for bengali $char');
+    debugPrint('addTopChars() called for kannada $char');
   }
 
   void removeTopChars() {
@@ -50,28 +82,7 @@ class Bengali {
         }
       }
     }
-    debugPrint('removeTopChars() called for bengali');
-  }
-
-  void setDefaultEnabled() {
-    enabled.clear();
-    for (int i = 0; i < characterSet.length; i++) {
-      List<bool> temp = [];
-      for (int j = 0; j < characterSet[i].length; j++) {
-        if (j == 0 && i != 0) {
-          temp.add(false);
-        } else if (i == 1 && j == 3) {
-          temp.add(false);
-        } else if (i == 4 && (j == 2 || j == 4)) {
-          temp.add(false);
-        } else if (i == 3 && j == 5) {
-          temp.add(false);
-        } else {
-          temp.add(true);
-        }
-      }
-      enabled.add(temp);
-    }
+    debugPrint('removeTopChars() called for kannada');
   }
 
   void updateEnabled(int row, int col) {
@@ -80,6 +91,8 @@ class Bengali {
       enabled[2][0] = true;
       enabled[3][0] = true;
       enabled[4][0] = true;
+    } else if (row == 3 && (col == 3 || col == 4)) {
+      enabled[4][2] = true;
     } else if (row == 3 && col == 6) {
       enabled[4][2] = true;
       enabled[4][4] = true;
@@ -122,19 +135,5 @@ class Bengali {
       }
     }
     return char;
-  }
-
-  String getMappedText(String text) {
-    String ans = "";
-    for (int i = 0; i < text.length; i++) {
-      int index = ben_tel.indexOf(text[i]);
-      if (index != -1) {
-        ans += ben[index];
-      } else {
-        ans += text[i];
-      }
-    }
-
-    return ans;
   }
 }

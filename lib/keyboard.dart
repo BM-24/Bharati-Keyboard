@@ -1,5 +1,5 @@
-import 'package:bharati_keyboard/languages/bengali.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'providers/text_provider.dart';
 import 'providers/languages.dart';
@@ -34,6 +34,7 @@ class Keyboard extends StatelessWidget {
             disabledBackgroundColor: Colors.grey[200],
           ),
           onPressed: () {
+            HapticFeedback.heavyImpact();
             context.read<Languages>().removeTopChars();
             context.read<TextProvider>().addText(' ', row, col);
           },
@@ -52,6 +53,7 @@ class Keyboard extends StatelessWidget {
               backgroundColor: Colors.grey[300],
             ),
             onPressed: () {
+              HapticFeedback.heavyImpact();
               context.read<Languages>().removeTopChars();
               context.read<TextProvider>().removeText();
               Map<String, int> prevKey =
@@ -87,6 +89,7 @@ class Keyboard extends StatelessWidget {
               backgroundColor: Colors.grey[300],
             ),
             onPressed: () {
+              HapticFeedback.heavyImpact();
               context.read<Languages>().removeTopChars();
               context.read<TextProvider>().addText('\n', row, col);
               context.read<Languages>().updateEnabled(row, col);
@@ -111,6 +114,7 @@ class Keyboard extends StatelessWidget {
           onPressed: !context.watch<Languages>().isEnabled[row][col]
               ? null
               : () {
+                  HapticFeedback.heavyImpact();
                   int type =
                       context.read<Languages>().getCharacterType(row, col);
                   if (type == 3) {
@@ -135,6 +139,7 @@ class Keyboard extends StatelessWidget {
                     context.read<TextProvider>().removeText();
                     text = context.read<Languages>().getType4Char(
                         row, col, prevChar, prevKey['row']!, prevKey['col']!);
+                    debugPrint("text: $text");
                     context
                         .read<TextProvider>()
                         .addText(text, prevKey['row']!, prevKey['col']!);
@@ -199,36 +204,38 @@ class Keyboard extends StatelessWidget {
     return Container(
       margin:
           const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
-      child: Column(
-        children: [
-          for (int i = 0;
-              i < context.watch<Languages>().getCharacterSet().length;
-              //i < Bengali().bengaliChars.length;
-              i++)
-            Row(
+      child: context.watch<Languages>().mode == 1
+          ? Container()
+          : Column(
               children: [
-                for (int j = 0;
-                    j < context.watch<Languages>().getCharacterSet()[i].length;
-                    //j < Bengali().bengaliChars[i].length;
-                    j++)
-                  getButton(
-                    context.watch<Languages>().getCharacterSet()[i][j],
-                    i,
-                    j,
-                    context,
+                for (int i = 0;
+                    i < context.watch<Languages>().getCharacterSet().length;
+                    // i < KeyBoardChars().keyboardChars.length;
+                    //i < Bengali().bengaliChars.length;
+                    i++)
+                  Row(
+                    children: [
+                      for (int j = 0;
+                          j <
+                              context
+                                  .watch<Languages>()
+                                  .getCharacterSet()[i]
+                                  .length;
+                          //j < KeyBoardChars().keyboardChars[i].length;
+                          //j < Bengali().bengaliChars[i].length;
+                          j++)
+                        getButton(
+                          context.watch<Languages>().getCharacterSet()[i][j],
+                          //KeyBoardChars().keyboardChars[i][j],
+                          i,
+                          j,
+                          context,
+                        ),
+                      //getButton(Bengali().bengaliChars[i][j], i, j, context),
+                    ],
                   ),
-                //getButton(Bengali().bengaliChars[i][j], i, j, context),
               ],
             ),
-
-          // for (var row in charArray)
-          //   Row(
-          //     children: [
-          //       for (var char in row) getButton(char),
-          //     ],
-          //   ),
-        ],
-      ),
     );
   }
 }
