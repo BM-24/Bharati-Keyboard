@@ -134,4 +134,18 @@ class Devanagari {
     }
     return ans;
   }
+
+  // Convert devanagari to Telugu
+  String getBharatiMapped(String text){
+    String ans = '';
+    for (int i = 0; i < text.length; i++) {
+      int index = hin.indexOf(text[i]);
+      if (index != -1) {
+        ans += Hintel[index];
+      } else {
+        ans += text[i];
+      }
+    }
+    return ans;
+  }
 }

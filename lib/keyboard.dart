@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:provider/provider.dart';
 import 'providers/text_provider.dart';
 import 'providers/languages.dart';
@@ -34,7 +35,8 @@ class Keyboard extends StatelessWidget {
             disabledBackgroundColor: Colors.grey[200],
           ),
           onPressed: () {
-            HapticFeedback.heavyImpact();
+            // HapticFeedback.heavyImpact();
+            Vibrate.feedback(FeedbackType.medium);
             context.read<Languages>().removeTopChars();
             context.read<TextProvider>().addText(' ', row, col);
           },
@@ -53,7 +55,12 @@ class Keyboard extends StatelessWidget {
               backgroundColor: Colors.grey[300],
             ),
             onPressed: () {
-              HapticFeedback.heavyImpact();
+              // HapticFeedback.heavyImpact();
+              // if (await Vibration.hasVibrator() == true) {
+              //   Vibration.vibrate();
+              // }
+              Vibrate.feedback(FeedbackType.medium);
+
               context.read<Languages>().removeTopChars();
               context.read<TextProvider>().removeText();
               Map<String, int> prevKey =
@@ -89,7 +96,8 @@ class Keyboard extends StatelessWidget {
               backgroundColor: Colors.grey[300],
             ),
             onPressed: () {
-              HapticFeedback.heavyImpact();
+              // HapticFeedback.heavyImpact();
+              Vibrate.feedback(FeedbackType.medium);
               context.read<Languages>().removeTopChars();
               context.read<TextProvider>().addText('\n', row, col);
               context.read<Languages>().updateEnabled(row, col);
@@ -114,7 +122,8 @@ class Keyboard extends StatelessWidget {
           onPressed: !context.watch<Languages>().isEnabled[row][col]
               ? null
               : () {
-                  HapticFeedback.heavyImpact();
+                  // HapticFeedback.heavyImpact();
+                  Vibrate.feedback(FeedbackType.medium);
                   int type =
                       context.read<Languages>().getCharacterType(row, col);
                   if (type == 3) {

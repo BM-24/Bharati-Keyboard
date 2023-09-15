@@ -151,4 +151,18 @@ class Malayalam {
     }
     return char;
   }
+
+  String getBharatiMapped(String text) {
+    String ans = '';
+    for (int i = 0; i < text.length; i++) {
+      int index = mal.indexOf(text[i]);
+      if (index == -1) {
+        debugPrint("ERROR : Character not mapped $text[i]");
+        ans += text[i];
+      } else {
+        ans += mal_tel[index];
+      }
+    }
+    return ans;
+  }
 }

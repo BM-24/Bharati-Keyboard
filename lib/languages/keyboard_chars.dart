@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class KeyBoardChars {
   List<List<String>> characterSet = [
     ["అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఋ", "్"],

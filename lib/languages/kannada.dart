@@ -59,6 +59,19 @@ class Kannada {
     return ans;
   }
 
+  String getBharatiMapped(String text) {
+    String ans = "";
+    for (int i = 0; i < text.length; i++) {
+      int index = kannada.indexOf(text[i]);
+      if (index == -1) {
+        ans += text[i];
+      } else {
+        ans += kannada_tel[index];
+      }
+    }
+    return ans;
+  }
+
   void addTopChars(String char) {
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < characterSet[i].length; j++) {

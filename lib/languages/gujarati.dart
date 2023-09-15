@@ -60,6 +60,19 @@ class Gujarati {
     return ans;
   }
 
+  String getBharatiMapped(String text) {
+    String ans = '';
+    for (int i = 0; i < text.length; i++) {
+      int index = guj.indexOf(text[i]);
+      if (index != -1) {
+        ans += gujtel[index];
+      } else {
+        ans += text[i];
+      }
+    }
+    return ans;
+  }
+
   void addTopChars(String char) {
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < characterSet[i].length; j++) {

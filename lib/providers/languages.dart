@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../languages/tamil.dart';
 import '../languages/telugu.dart';
@@ -80,6 +79,30 @@ class Languages with ChangeNotifier {
       return gujarati.getMappedText(text);
     } else if (_choosenLanguageIndex == 8) {
       return odia.getMappedText(text);
+    }
+
+    return text;
+  }
+
+  String getBharatiMapped(String text) {
+    if (_choosenLanguageIndex == 0) {
+      return devanagari.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 1) {
+      return tamil.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 2) {
+      return telugu.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 3) {
+      return kannada.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 4) {
+      return malayalam.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 5) {
+      return bengali.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 6) {
+      return gurmukhi.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 7) {
+      return gujarati.getBharatiMapped(text);
+    } else if (_choosenLanguageIndex == 8) {
+      return odia.getBharatiMapped(text);
     }
 
     return text;

@@ -15,6 +15,10 @@ class Telugu {
     return text;
   }
 
+  String getBharatiMapped(String text) {
+    return text;
+  }
+
   List<List<bool>> enabled = [];
 
   List<List<String>> getCharacterSet() {

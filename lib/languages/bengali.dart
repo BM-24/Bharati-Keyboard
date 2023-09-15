@@ -75,7 +75,7 @@ class Bengali {
   }
 
   void updateEnabled(int row, int col) {
-    debugPrint("Hello");
+    // debugPrint("Hello");
     if (row == 2 && col > 0 && col < 6) {
       enabled[2][0] = true;
       enabled[3][0] = true;
@@ -130,6 +130,20 @@ class Bengali {
       int index = ben_tel.indexOf(text[i]);
       if (index != -1) {
         ans += ben[index];
+      } else {
+        ans += text[i];
+      }
+    }
+
+    return ans;
+  }
+
+  String getBharatiMapped(String text) {
+    String ans = "";
+    for (int i = 0; i < text.length; i++) {
+      int index = ben.indexOf(text[i]);
+      if (index != -1) {
+        ans += ben_tel[index];
       } else {
         ans += text[i];
       }

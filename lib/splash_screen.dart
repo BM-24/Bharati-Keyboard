@@ -1,5 +1,6 @@
 import 'package:bharati_keyboard/home_page.dart';
 import 'package:flutter/material.dart';
+// import 'package:showcaseview/showcaseview.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,9 +19,16 @@ class _SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => const MyHomePage(
-            title: 'Bhararti Keyboard',
+            title: 'Bharati Keyboard',
           ),
         ),
+        // MaterialPageRoute(
+        //   builder: (_) => ShowCaseWidget(
+        //     builder: Builder(
+        //       builder: (context) => const MyHomePage(title: 'Bharati Keyboard'),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }
